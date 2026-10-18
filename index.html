@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Vault — Coffre local</title>
+<style>
+:root{--bg:#080b18;--panel:#11172b;--panel2:#171f39;--line:#283354;--text:#eef2ff;--muted:#9ba8ca;--blue:#7ec8ff;--violet:#b794f6;--gold:#ffd98e;--danger:#ff9ba9}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 0%,#1b2750 0,transparent 40%),radial-gradient(ellipse at 95% 20%,#291b4c 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{max-width:1200px;margin:auto;padding:30px 22px 18px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.brand{display:flex;gap:13px;align-items:center}.logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--violet));color:#0a1022;font-size:25px;box-shadow:0 0 28px #7ec8ff33}
+h1{font-size:clamp(24px,4vw,34px);letter-spacing:-.04em;margin:0}.sub{color:var(--muted);margin:3px 0 0}.local-badge{border:1px solid #3b6d68;background:#102a2b;color:#9ff2d6;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700}
+main{max-width:1200px;margin:auto;padding:0 22px 44px}.notice{border:1px solid #63522d;background:#292315;color:#ffe7ae;padding:13px 15px;border-radius:14px;margin:8px 0 20px;font-size:13px}
+.toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;margin-bottom:14px}.search-wrap{position:relative}.search-wrap span{position:absolute;left:14px;top:11px;color:var(--muted)}input[type=search],select{width:100%;background:#0d1327;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:12px 14px;outline:none}input[type=search]{padding-left:40px}input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #7ec8ff20}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:11px 15px;border-radius:12px;cursor:pointer;font-weight:650;transition:.15s}.btn:hover{border-color:var(--blue);transform:translateY(-1px)}.btn.primary{background:linear-gradient(120deg,#7ec8ff,#b794f6);border:0;color:#0b1021}.btn.danger{border-color:#70414c;color:#ffc0c8}.importer{border:1px dashed #53618b;border-radius:17px;padding:22px;background:#11172bbd;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:20px}.importer h2{font-size:17px;margin:0 0 4px}.importer p{margin:0;color:var(--muted);font-size:13px}.file-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.file-input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;z-index:-1}.file-label{display:inline-flex;align-items:center;min-height:42px}.file-input:focus-visible + .file-label{outline:3px solid var(--blue);outline-offset:3px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 18px}.stat{background:#11172bce;border:1px solid var(--line);border-radius:15px;padding:15px}.stat small{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:24px;margin-top:2px}
+.list-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 0 12px;flex-wrap:wrap}.list-head h2{margin:0;font-size:19px}.filters{display:flex;gap:9px;align-items:center}.filters select{width:auto;max-width:180px;padding:9px 12px}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:13px}.entry{background:linear-gradient(155deg,#151d35,#101629);border:1px solid var(--line);border-radius:17px;padding:17px;min-width:0;box-shadow:0 12px 30px #00000018}.entry-top{display:flex;align-items:flex-start;gap:12px}.site-icon{flex:none;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:#243052;color:var(--blue);font-weight:800;font-size:17px}.entry-title{min-width:0;flex:1}.entry h3{margin:0;font-size:16px;overflow-wrap:anywhere}.url{color:var(--blue);font-size:12px;overflow-wrap:anywhere;text-decoration:none}.url:hover{text-decoration:underline}.pill{font-size:10px;border:1px solid #374568;color:#b8c7ee;padding:3px 7px;border-radius:999px;white-space:nowrap}.field{margin-top:14px}.field label{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}.fieldline{display:flex;align-items:center;gap:7px;min-width:0}.value{min-width:0;flex:1;overflow-wrap:anywhere;color:#e5eaff;font-size:13px}.value.masked{letter-spacing:.12em;color:#b4c0e2}.mini{background:#202a48;color:#dce6ff;border:1px solid #334266;border-radius:8px;padding:5px 8px;cursor:pointer;font-size:11px}.mini:hover{border-color:var(--blue)}.notes{white-space:pre-wrap;overflow-wrap:anywhere;color:#b9c4e2;font-size:12px;background:#0b1122;padding:9px;border-radius:9px}.card-actions{display:flex;justify-content:space-between;align-items:center;margin-top:15px;padding-top:12px;border-top:1px solid #273250}.empty{padding:45px 15px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:16px}.empty strong{display:block;color:var(--text);font-size:17px;margin-bottom:5px}.footer{text-align:center;color:#7582a6;font-size:11px;margin-top:30px}
+@media(max-width:620px){header{padding-top:22px}.toolbar{grid-template-columns:1fr}.stats{gap:8px}.stat{padding:11px}.stat strong{font-size:20px}.importer{align-items:flex-start}.file-actions{width:100%}.file-actions .btn{flex:1}.filters{width:100%}.filters select{flex:1;max-width:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo" aria-label="Vault — coffre sécurisé"><svg viewBox="0 0 48 48" width="31" height="31" aria-hidden="true"><path d="M24 4 39 10v12c0 10-6.3 17-15 22C15.3 39 9 32 9 22V10Z" fill="none" stroke="#0a1022" stroke-width="3" stroke-linejoin="round"/><rect x="17" y="21" width="14" height="11" rx="2" fill="#0a1022"/><path d="M20 21v-4a4 4 0 0 1 8 0v4" fill="none" stroke="#0a1022" stroke-width="3" stroke-linecap="round"/></svg></div><div><h1>Vault<span style="color:var(--blue)">.</span></h1><p class="sub">Tes identifiants, organisés simplement.</p></div></div>
+  <div class="local-badge">● TRAITEMENT LOCAL</div>
+</header>
+<main>
+  <div class="notice"><strong>🔒 Confidentialité :</strong> ce fichier lit le CSV dans ton navigateur et n'envoie rien sur Internet. Les données restent en mémoire le temps que la page est ouverte. Évite les ordinateurs partagés et ferme l'onglet après usage. Ce n'est pas un coffre chiffré.</div>
+  <section class="importer">
+    <div><h2>Importer un fichier</h2><p>CSV UTF-8 avec les colonnes : name, url, username, password, note</p></div>
+    <div class="file-actions">
+      <input id="fileInput" type="file" accept=".csv,text/csv,.tsv,text/tab-separated-values" class="file-input">
+      <label class="btn primary file-label" for="fileInput">Importer un fichier</label>
+      <button class="btn" id="demoBtn">Voir la démo</button>
+    </div>
+    <p id="importStatus" role="status" aria-live="polite" style="flex-basis:100%;margin-top:8px"></p>
+  </section>
+  <section class="stats" aria-label="Statistiques">
+    <div class="stat"><small>Identifiants affichés</small><strong id="totalStat">0</strong></div>
+    <div class="stat"><small>Résultats de recherche</small><strong id="shownStat">0</strong></div>
+    <div class="stat"><small>Mots de passe visibles</small><strong id="visibleStat">0</strong></div>
+  </section>
+  <div class="toolbar">
+    <div class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Rechercher un site, nom, identifiant, note…" autocomplete="off"></div>
+    <button class="btn danger" id="clearBtn">Effacer les données</button>
+  </div>
+  <div class="list-head"><h2>Mes identifiants</h2><div class="filters"><select id="sortSelect" aria-label="Trier"><option value="name">Nom A → Z</option><option value="nameDesc">Nom Z → A</option><option value="url">Site A → Z</option></select></div></div>
+  <div id="cards" class="cards"></div>
+  <div class="footer">VAULT LOCAL · Aucun compte · Aucun stockage automatique · Fichier HTML autonome</div>
+</main>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  let entries = [], shownPasswords = new Set();
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  function parseCSV(text) {
+    text = text.replace(/^\uFEFF/, '');
+    const firstLine = text.split(/\r?\n/, 1)[0] || '';
+    const delimiter = [',',';','\t'].sort((a,b)=>firstLine.split(b).length-firstLine.split(a).length)[0];
+    const rows=[]; let row=[], cell='', quoted=false;
+    for(let i=0;i<text.length;i++){
+      const c=text[i], n=text[i+1];
+      if(quoted){ if(c==='"'&&n==='"'){cell+='"';i++;} else if(c==='"') quoted=false; else cell+=c; }
+      else if(c==='"') quoted=true;
+      else if(c===delimiter){row.push(cell);cell='';}
+      else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell='';}
+      else if(c!=='\r') cell+=c;
+    }
+    if(cell.length||row.length){row.push(cell);rows.push(row);}
+    if(!rows.length) return [];
+    const headers=rows.shift().map(h=>h.trim().toLowerCase());
+    const required=['name','url','username','password','note'];
+    const missing=required.filter(h=>!headers.includes(h));
+    if(missing.length) throw new Error('Colonnes manquantes : '+missing.join(', ')+'. Vérifie la première ligne du CSV.');
+    return rows.filter(r=>r.some(v=>v.trim()!=='')).map(r=>{
+      const obj={}; headers.forEach((h,i)=>obj[h]=(r[i]??''));
+      return {name:obj.name,url:obj.url,username:obj.username,password:obj.password,note:obj.note};
+    });
+  }
+  function filtered(){
+    const q=$('searchInput').value.trim().toLocaleLowerCase('fr');
+    const sort=$('sortSelect').value;
+    return entries.filter(e=>[e.name,e.url,e.username,e.note].some(v=>(v||'').toLocaleLowerCase('fr').includes(q)))
+      .sort((a,b)=>{const cmp=(a.name||'').localeCompare(b.name||'','fr',{sensitivity:'base'});return sort==='nameDesc'?-cmp:sort==='url'?(a.url||'').localeCompare(b.url||'','fr'):cmp;});
+  }
+  function render(){
+    const data=filtered();
+    $('totalStat').textContent=entries.length;
+    $('shownStat').textContent=data.length;
+    $('visibleStat').textContent=shownPasswords.size;
+    if(!data.length){$('cards').innerHTML='<div class="empty" style="grid-column:1/-1"><strong>'+(entries.length?'Aucun résultat':'Ton coffre est vide')+'</strong>'+(entries.length?'Essaie une autre recherche.':'Importe ton fichier CSV pour commencer.')+'</div>';return;}
+    $('cards').innerHTML=data.map((e)=>{
+      const id=entries.indexOf(e), isShown=shownPasswords.has(id);
+      let domain=''; try{domain=new URL(/^https?:\/\//i.test(e.url)?e.url:'https://'+e.url).hostname;}catch{}
+      const initial=(e.name||domain||'V').trim().charAt(0).toUpperCase();
+      const safeUrl=/^https?:\/\//i.test(e.url)?e.url:(e.url?'https://'+e.url:'');
+      return `<article class="entry">
+        <div class="entry-top"><div class="site-icon">${escapeHtml(initial||'V')}</div><div class="entry-title"><h3>${escapeHtml(e.name||'Sans nom')}</h3>${safeUrl?`<a class="url" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(e.url)}</a>`:`<span class="url">Aucune URL</span>`}</div><span class="pill">LOGIN</span></div>
+        <div class="field"><label>Nom d'utilisateur</label><div class="fieldline"><span class="value">${escapeHtml(e.username||'—')}</span>${e.username?`<button class="mini" data-copy="${id}:username">Copier</button>`:''}</div></div>
+        <div class="field"><label>Mot de passe</label><div class="fieldline"><span class="value ${isShown?'':'masked'}">${isShown?escapeHtml(e.password||'(vide)'):'••••••••••••'}</span><button class="mini" data-toggle="${id}">${isShown?'Masquer':'Afficher'}</button>${e.password?`<button class="mini" data-copy="${id}:password">Copier</button>`:''}</div></div>
+        ${e.note?`<div class="field"><label>Note</label><div class="notes">${escapeHtml(e.note)}</div></div>`:''}
+        <div class="card-actions"><span class="url">${escapeHtml(domain||'Entrée locale')}</span><button class="mini" data-toggle="${id}">${isShown?'◉ Masquer le secret':'◎ Voir le secret'}</button></div>
+      </article>`;
+    }).join('');
+    $('shownStat').textContent=data.length;
+  }
+  $('fileInput').addEventListener('change', ev=>{
+    const file=ev.target.files && ev.target.files[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try { const imported = parseCSV(String(reader.result || '')); entries = imported; shownPasswords.clear(); render(); $('importStatus').textContent = imported.length + ' entrée(s) importée(s) en mémoire locale.'; }
+      catch(err) { $('importStatus').textContent = 'Erreur : ' + err.message; }
+      ev.target.value = '';
+    };
+    reader.onerror = () => { $('importStatus').textContent = 'Impossible de lire ce fichier. Essaie de nouveau avec un CSV UTF-8.'; ev.target.value=''; };
+    reader.readAsText(file, 'UTF-8');
+  });
+  $('searchInput').addEventListener('input',render);
+  $('sortSelect').addEventListener('change',render);
+  $('clearBtn').addEventListener('click',()=>{if(confirm('Effacer tous les identifiants de cette page ?')){entries=[];shownPasswords.clear();$('searchInput').value='';render();}});
+  $('demoBtn').addEventListener('click',()=>{entries=[{name:'GitHub (démo)',url:'https://github.com',username:'demo-utilisateur',password:'FAUX-MOT-DE-PASSE-001',note:'Exemple fictif : ne correspond à aucun compte réel.'},{name:'Boîte mail (démo)',url:'https://example.com/mail',username:'demo@example.com',password:'FAUX-MOT-DE-PASSE-002',note:'Donnée de démonstration uniquement.'},{name:'Espace personnel (démo)',url:'https://example.org',username:'compte-test',password:'FAUX-MOT-DE-PASSE-003',note:'Importe ton CSV pour remplacer ces exemples.'}];shownPasswords.clear();$('searchInput').value='';$('importStatus').textContent='Mode démo activé : ces données sont entièrement fictives.';render();});
+  $('cards').addEventListener('click',async ev=>{
+    const toggle=ev.target.closest('[data-toggle]');
+    if(toggle){const id=Number(toggle.dataset.toggle);shownPasswords.has(id)?shownPasswords.delete(id):shownPasswords.add(id);render();return;}
+    const copy=ev.target.closest('[data-copy]');
+    if(copy){const [id,field]=copy.dataset.copy.split(':');const value=entries[Number(id)]?.[field];if(value==null)return;
+      try{await navigator.clipboard.writeText(value);const old=copy.textContent;copy.textContent='Copié ✓';setTimeout(()=>{if(copy.isConnected)copy.textContent=old;},1200);}
+      catch{alert('Copie non autorisée par ce navigateur. Tu peux sélectionner le texte affiché manuellement.');}
+    }
+  });
+  render();
+})();
+</script>
+</body>
+</html>
